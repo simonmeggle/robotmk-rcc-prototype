@@ -13,9 +13,15 @@ SET ROBOCORP_HOME=%AGENT_HOME%\lib\robocorp
 SET ENV_CONFIG_ROBOT=%AGENT_HOME%\config\robotmk-env\robot.yaml
 SET ENV_CONFIG_CONDA=%AGENT_HOME%\config\robotmk-env\conda.yaml
 
-REM === Create the environment
-%RCC% run -r %ENV_CONFIG_ROBOT% --task robotmk-env --silent
+REM === Check for the environment and exit immediately if not present!
 
+FOR /F "tokens=5" %%a in ('rcc.exe env hash %ENV_CONFIG_CONDA% 2^>^&1') do SET OUT=%%a
+SET HASH=%OUT:~0,-1%
 
-echo %ERRORLEVEL%
+IF EXIST %ROBOCORP_HOME%\live\%HASH% (
+    echo YES! Environment exists! Can execute!
+) ELSE (
+    echo NO! Shit, let this env create first. 
+)
+
 REM # TODO: check for module import errors

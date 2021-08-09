@@ -1,6 +1,8 @@
 tasks:
-  Run Python:
-    shell: python task.py
+  robotmk-env:
+    shell: python robotmk-env.py
+  robotmk-controller:
+    shell: python robotmk.py
 
 condaConfigFile: conda.yaml
 artifactsDir: output

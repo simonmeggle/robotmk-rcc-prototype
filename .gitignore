@@ -6,3 +6,4 @@ install/
 log/
 state/
 __pycache__
+lib/robocorp

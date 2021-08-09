@@ -5,3 +5,4 @@ check_mk.user.yml
 install/
 log/
 state/
+__pycache__

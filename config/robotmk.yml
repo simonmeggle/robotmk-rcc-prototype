@@ -1,0 +1,22 @@
+# Created by Check_MK Agent Bakery.
+# This file is managed via WATO, do not edit manually or you
+# lose your changes next time when you update the agent.
+
+# This file is part of Robotmk, a module for the integration of Robot
+# framework test results into Checkmk.
+#
+# https://robotmk.org
+# https://github.com/simonmeggle/robotmk
+# https://robotframework.org/
+# ROBOTMK VERSION: v1.1.0-beta.5
+
+global:
+  execution_mode: agent_serial
+  agent_output_encoding: zlib_codec
+  transmit_html: true
+  logging: true
+  log_rotation: '14'
+  cache_time: 960
+  execution_interval: 900
+suites: {}
+

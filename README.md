@@ -34,3 +34,47 @@ git fetch
 git reset origin/main  # Required when the versioned files existed in path before "git init" of this repo.
 git checkout main
 ```
+
+Now the agent directory should have the following files: 
+
+* `bin/rcc.exe`
+* `config/robotmk.yml`
+* `plugins.robotmk.py`
+* `plugins.robotmk-runner.py`
+
+
+## Goals
+
+### I) A dedicated rcc Python environment for Robotmk
+
+**Requirement**: Robotmk should run within its own environment which brings all modules (mergedeep, dateutil, etc).
+
+#### I.1) Quick win: Without holotree
+
+
+`plugins/3600/robotmk_env.bat`
+
+Ausführung 1x/h
+schnelle Prüfung, ob robotmk-env existiert
+falls nicht: 
+
+	<<<robotmk>>>
+	Robotmk Python environment in preparation...
+	
+    bin/rcc.exe
+
+#### I.2) The hard way: using holotree
+
+The newest version of rcc has a concept called **holotree** which is used for [https://github.com/robocorp/rcc/blob/master/docs/environment-caching.md](environment caching). With this technology it should be possible that robotmk can be run without downloading any files on the machine. 
+
+
+### II) Dedicated rcc Python environments for each test 
+
+**Requirement**: Robotmk (run within its own rcc environment) executes Robot tests again with `rcc` and an own isolated environment. There should be no version conflict of Python modules at all. 
+
+#### I.1) Quick win: Without holotree
+
+
+#### I.2) The hard way: using holotree
+
+

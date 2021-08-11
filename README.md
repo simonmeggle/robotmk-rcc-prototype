@@ -45,23 +45,21 @@ Now the agent directory should have the following files:
 
 ## Goals
 
-### I) A dedicated rcc Python environment for Robotmk
+### I) A dedicated rcc Python environment for Robotmk/Robotmk-runner
 
 **Requirement**: Robotmk should run within its own environment which brings all modules (mergedeep, dateutil, etc).
 
 #### I.1) Quick win: Without holotree
 
+`robotmk_env.bat` gets executed hourly. It reads the definition from `\config\robotmk-env\robot.yaml` and starts the task `robotmk-env`. 
 
-`plugins/3600/robotmk_env.bat`
+This task is only dummy Python file; the main purpose is to create an environment with all modules listed in conda.yml.
 
-Ausführung 1x/h
-schnelle Prüfung, ob robotmk-env existiert
-falls nicht: 
+`robotmk.bat` is just a wrapper for `robotmk.py`. It gets executed in the regular check interval of the agent. It calculates the hash from `conda.yml` to determine if the Robotmk env is already created. If not, it exits. 
 
-	<<<robotmk>>>
-	Robotmk Python environment in preparation...
-	
-    bin/rcc.exe
+If the env is present, it starts the task `robotmk`, which is the normal controller execution of robotmk. 
+
+*TODO*: How can `robotmk.bat` check if the environment creation is finished? When the creation is in process, the tast run of robotmk stucks.
 
 #### I.2) The hard way: using holotree
 

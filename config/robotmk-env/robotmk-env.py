@@ -1,9 +1,4 @@
-"""Template robot with Python."""
+import sys
 
-
-def minimal_task():
-    print("Robotmk environment was bootstrapped successfully. ")
-
-
-if __name__ == "__main__":
-    minimal_task()
+print("Robotmk environment was bootstrapped successfully. ")
+print("Interpreter: %s" % sys.executable)

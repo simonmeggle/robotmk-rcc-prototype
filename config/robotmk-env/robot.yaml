@@ -1,8 +1,13 @@
 tasks:
+  # Environment preparation
   robotmk-env:
     shell: python robotmk-env.py
-  robotmk-controller:
+  # Short-Runner
+  robotmk:
     shell: python robotmk.py
+  # Long-Runner (async/external)
+  robotmk-runner:
+    shell: python robotmk-runner.py
 
 condaConfigFile: conda.yaml
 artifactsDir: output

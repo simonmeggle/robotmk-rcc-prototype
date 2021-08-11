@@ -1,0 +1,14 @@
+tasks:
+  robotmk:
+    shell: python -m robot --report NONE --outputdir output 
+  robotmk-man:
+    shell: python -m robot --report NONE --outputdir output tasks.robot
+
+condaConfigFile: conda.yaml
+artifactsDir: output
+PATH:
+  - .
+PYTHONPATH:
+  - .
+ignoreFiles:
+  - .gitignore

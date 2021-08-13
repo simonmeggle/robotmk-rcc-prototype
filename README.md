@@ -12,7 +12,35 @@ What rcc does is, briefly explained, to describe how a complete Python runtime e
 
 The original idea comes form this issue: https://github.com/simonmeggle/robotmk/issues/148
 
-## Requirements
+A big requirement for the rcc integration is that rcc is only an *additional* mode and that changes to Robotmk are kept as minimal as possible. For this reason, the whole env creation process is done by wrapper scripts around Robotmk. The only exception where an adaption will be needed is `robotmk-runner.py` when it has to create the environments for the suites to be executed.
+
+The following animated image (hopefully) shows this approach better than comparing two images, one below the other. 
+
+![](./img/robotmk_python_anim.gif)
+
+## Added value
+
+**Why the heck are we doing this?**
+
+* We will not only automate the test, but also the **client setup**, including all requirements
+  * => reduce **deployment time** by eliminating all manual tasks
+  * => speedup **development time** (rcc environments can also be used by developers)
+  * => reduce **error rate**
+  * => reduce **operating costs**
+* Complete offline operation by using [RCC holotree](https://github.com/robocorp/rcc/blob/master/docs/environment-caching.md); all installation dependencies should be taken from file system
+  * => increase **deployment speed**
+  * => save **network bandwidth**
+  * => deploy test machines **isolated from the internet**
+* Solve the *"works-on-my-machine"*-Problem
+  * Like Docker-Containers, a rcc environment perfectly astracts all the conditions a automation has to run in. 
+  * The toolchain for the environment creation is always and everywhere the same: 
+    * on the **developer's machines**
+    * on test clients (VMs)
+  * The [RCC toolchain](https://robocorp.com/docs/rcc/overview) paves the way to orchestrate E2E moinitoring checks with the [Robocorp Control Room](https://robocorp.com/products/control-room/). 
+
+## Requirements for this repo
+
+This prototype was built with
 
 * Windows Operating System
 * Checkmk Agent installed (v1.6/2)
@@ -43,13 +71,13 @@ Now the agent directory should have the following files:
 * `plugins.robotmk-runner.py`
 
 
-## Goals
+## Prototype goals
 
-### I) A dedicated rcc Python environment for Robotmk/Robotmk-runner
+### Goal I) A dedicated rcc Python environment for Robotmk/Robotmk-runner
 
 **Requirement**: Robotmk should run within its own environment which brings all modules (mergedeep, dateutil, etc).
 
-#### I.1) Quick win: Without holotree
+#### Goal I.1) Quick win: Without holotree
 
 * `robotmk_env.bat`: Environment creation for Robotmk
 * `robotmk.bat`: "The" cmk plugin. Returns data to the agent. 
@@ -64,16 +92,16 @@ If the env is present, it starts the task `robotmk`, which is the normal control
 
 *TODO*: How can `robotmk.bat` check if the environment creation is finished? When the creation is in process, the tast run of robotmk stucks.
 
-#### I.2) The hard way: using holotree
+#### Goal I.2) The hard way: using holotree
 
 The newest version of rcc has a concept called **holotree** which is used for [https://github.com/robocorp/rcc/blob/master/docs/environment-caching.md](environment caching). With this technology it should be possible that robotmk can be run without downloading any files on the machine. 
 
 
-### II) Dedicated rcc Python environments for each test 
+### Goal II) Dedicated rcc Python environments for each test 
 
 **Requirement**: `robotmk-runner.py` (run within Robotmk environment as task `robotmk-runner`) executes Robot tests again with `rcc` and an own isolated environment. There should be no version conflict of Python modules at all. 
 
-#### I.1) Quick win: Without holotree
+#### Goal I.1) Quick win: Without holotree
 
 * `robotmk-runner.py` has to know the PATH where `rcc.exe` can be found
 * iterate through all defined suites in `robotmk.yml`
@@ -130,11 +158,13 @@ VAR2=Mee too...
 
 ##### Step2: needs adaption to robotmk.yml format and `robotmk.py`. 
 
-#### I.2) The hard way: using holotree
+#### Goal I.2) The hard way: using holotree
 
 
-### III) Execute Ansible hooks
+### Goal III) Integrate a configuration management tool
 
-**Requirement**: Before and after the `robotmk` task within a Robot, execute an Ansible task to configure the machine. 
+**Requirement**: Before and after the `robotmk` task within a Robot, `robotmk-runner` searches for pre-/posthooks. Pre-Hooks could install the application to test, and ensure that the system is ready to be tested. Post-Hooks could be used to do some housekeeping like deleting cached data. 
 
-TODO: pip installation of Ansible? 
+Using Ansible here (as proposed [here](https://github.com/simonmeggle/robotmk/issues/111)) is not possible because [Ansible does not compile on Windows](http://blog.rolpdog.com/2020/03/why-no-ansible-controller-for-windows.html).
+
+Instead, the usage of a [masterless Salt Minion](https://docs.saltproject.io/en/latest/topics/tutorials/quickstart.html) looks promising. It has to be tested how the Minion could use the `robotmk-env` environment to save network bandwidth and limit the file system footprint. 

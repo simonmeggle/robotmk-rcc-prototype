@@ -1,0 +1,24 @@
+# Created by Check_MK Agent Bakery.
+# This file is managed via WATO, do not edit manually or you
+# lose your changes next time when you update the agent.
+
+global:
+  enabled: true
+  execute:
+  - exe
+  - bat
+  - vbs
+  - ps1
+  - py
+  install: true
+  port: 6556
+plugins:
+  enabled: true
+  execution:
+  # Ensure that here is a environment for Robotmk/runner
+  - cache_age: 3600
+    pattern: $CUSTOM_PLUGINS_PATH$\robotmk-env.bat
+  # Execute all defined Robot tests with Runner from Robotmk env.
+  # Each test will have its own environment. 
+  - cache_age: 900
+    pattern: $CUSTOM_PLUGINS_PATH$\robotmk-runner.bat

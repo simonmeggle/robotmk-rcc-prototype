@@ -1,5 +1,4 @@
 backup/
-bakery/
 check_mk.user.example.yml
 check_mk.user.yml
 install/

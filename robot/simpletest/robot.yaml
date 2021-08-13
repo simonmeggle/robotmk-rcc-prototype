@@ -1,8 +1,15 @@
 tasks:
+  robotmk-prehook:
+    shell: echo "Do some client pre-configuration"
+  # Don't execute this by hand; this task is meant to be parametrized on the 
+  # cmdline with "--" (see https://github.com/robocorp/rcc/blob/master/docs/recipes.md#how-pass-arguments-to-robot-from-cli)
   robotmk:
     shell: python -m robot --report NONE --outputdir output 
+  # A task for manual execution 
   robotmk-man:
     shell: python -m robot --report NONE --outputdir output tasks.robot
+  robotmk-posthook:
+    shell: echo "Cleanup & housekeeping"
 
 condaConfigFile: conda.yaml
 artifactsDir: output

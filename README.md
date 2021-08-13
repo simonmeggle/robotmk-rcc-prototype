@@ -51,6 +51,9 @@ Now the agent directory should have the following files:
 
 #### I.1) Quick win: Without holotree
 
+* `robotmk_env.bat`: Environment creation for Robotmk
+* `robotmk.bat`: "The" cmk plugin. Returns data to the agent. 
+
 `robotmk_env.bat` gets executed hourly. It reads the definition from `\config\robotmk-env\robot.yaml` and starts the task `robotmk-env`. 
 
 This task is only dummy Python file; the main purpose is to create an environment with all modules listed in conda.yml.
@@ -133,3 +136,5 @@ VAR2=Mee too...
 ### III) Execute Ansible hooks
 
 **Requirement**: Before and after the `robotmk` task within a Robot, execute an Ansible task to configure the machine. 
+
+TODO: pip installation of Ansible? 

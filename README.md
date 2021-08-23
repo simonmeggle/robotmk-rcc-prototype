@@ -14,7 +14,7 @@ The original idea comes form this issue: https://github.com/simonmeggle/robotmk/
 
 A big requirement for the rcc integration is that rcc is only an *additional* mode and that changes to Robotmk are kept as minimal as possible. For this reason, the whole env creation process is done by wrapper scripts around Robotmk. The only exception where an adaption will be needed is `robotmk-runner.py` when it has to create the environments for the suites to be executed.
 
-The following animated image (hopefully) shows this approach better than comparing two images, one below the other. 
+The following animated image shows this approach better than comparing two images, one below the other. 
 
 ![](./img/robotmk_python_anim.gif)
 
